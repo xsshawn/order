@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.order.server.dao.OrderDetailMapper">
+    <select id="queryOrderDetailById" parameterType="java.lang.String"
+            resultType="com.project.order.server.entity.OrderDetail">
+        SELECT
+        detail_id,
+        order_id,
+        product_id,
+        product_name,
+        product_price,
+        product_quantity,
+        product_icon,
+        DATE_FORMAT(create_time, '%Y-%m-%d %T') AS create_time,
+        DATE_FORMAT(update_time, '%Y-%m-%d %T') AS update_time,
+        create_user,
+        update_user
+        FROM order_detail
+        <where>
+            <if test="detailId != null and detailId != ''">
+                detail_id=#{detailId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertOrder" parameterType="com.project.order.server.entity.OrderDetail">
+        insert into order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="detailId != null and detailId != ''">
+                detail_id,
+            </if>
+            <if test="orderId != null and orderId != ''">
+                order_id,
+            </if>
+            <if test="productId != null and productId != ''">
+                product_id,
+            </if>
+            <if test="productName != null and productName != ''">
+                product_name,
+            </if>
+            <if test="(productPrice != null and productPrice != '') or productPrice == 0">
+                product_price,
+            </if>
+            <if test="(productQuantity != null and productQuantity != '') or productQuantity == 0">
+                product_quantity,
+            </if>
+            <if test="productIcon != null and productIcon != ''">
+                product_icon,
+            </if>
+            <if test="createUser != null and createUser != ''">
+                create_user,
+            </if>
+            <if test="updateUser != null and updateUser != ''">
+                update_user
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="detailId != null and detailId != ''">
+                #{detailId},
+            </if>
+            <if test="orderId != null and orderId != ''">
+                #{orderId},
+            </if>
+            <if test="productId != null and productId != ''">
+                #{productId},
+            </if>
+            <if test="productName != null and productName != ''">
+                #{productName},
+            </if>
+            <if test="(productPrice != null and productPrice != '') or productPrice == 0">
+                #{productPrice},
+            </if>
+            <if test="(productQuantity != null and productQuantity != '') or productQuantity == 0">
+                #{productQuantity},
+            </if>
+            <if test="productIcon != null and productIcon != ''">
+                #{productIcon},
+            </if>
+            <if test="createUser != null and createUser != ''">
+                #{createUser},
+            </if>
+            <if test="updateUser != null and updateUser != ''">
+                #{updateUser}
+            </if>
+        </trim>
+    </insert>
+</mapper>
