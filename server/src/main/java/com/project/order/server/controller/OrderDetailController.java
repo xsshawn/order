@@ -9,12 +9,15 @@ import com.project.order.server.service.OrderDetailService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 @RestController
@@ -57,4 +60,35 @@ public class OrderDetailController {
             return ResultVOUtil.error("新增订单详情失败");
         }
     }
+
+    /**
+     * 只有 ROLE_USER 角色的用户才能访问
+     * @return 问候信息
+     */
+    @GetMapping("/hello")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String helloUser(){
+        return "hello User";
+    }
+
+    /**
+     * 只有 ROLE_ADMIN 角色的用户才能访问
+     * @return 问候信息
+     */
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String helloAdmin(){
+        return "hello Admin";
+    }
+
+    /**
+     * 只有 ROLE_GUEST 角色的用户才能访问
+     * @return 问候信息
+     */
+    @GetMapping("/guest")
+    @PreAuthorize("hasRole('ROLE_GUEST')")
+    public String helloGuest(){
+        return "hello Guest";
+    }
+
 }
